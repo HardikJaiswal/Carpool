@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import react from 'react';
+import './App.css';
+import GeneralHome from './General-Homepage/GeneralHome';
+import UserHome from './User-Homepage/UserHome';
+import Profile from './User-Homepage/Profile';
+import History from './User-Homepage/History';
+import { Route, Routes } from 'react-router-dom';
 
-import './custom.css'
-
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
+export default class App extends react.Component {
+    render() {
+        return (
+            <Routes>
+                <Route exact path='/' element={<GeneralHome />} />
+                <Route path='/user-home' element={
+                    <UserHome>
+                        <Route path='/history' element={<History />} />
+                        <Route path='/history' element={<Profile />} />
+                    </UserHome>
+                } />
+            </Routes>
+        );
+    }
 }

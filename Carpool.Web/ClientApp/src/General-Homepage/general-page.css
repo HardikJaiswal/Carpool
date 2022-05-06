@@ -1,0 +1,60 @@
+.bg-orange{
+  background-color: #ffac19;
+}
+.bg-purple{
+  background-color: #9319ff;
+}
+.general-home{
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+.sign-in{
+  justify-self: center;
+  text-align: center;
+  margin-top: 15%;
+}
+.input-area{
+  height: 45px;
+  border-radius: 4px;
+  width: 300px;
+  border: 1px solid grey;
+}
+.input-text{
+  border: none;
+  font-size: 18px;
+  transform: translate(-10px, 13px);
+  width: 250px;
+  height: 25px;
+}
+.input-text:focus {
+  outline: none;
+}
+.floating-text{
+  position: absolute;
+  transform: translate(-260px, 11px);
+  pointer-events: none;
+  transition: 0.2s ease all;
+  color: gainsboro;
+  width: max-content;
+}
+input:focus ~ .floating-text,
+input:not(:focus):valid ~ .floating-text{
+  transform: translate(-262px);
+  font-size: 11px;
+  opacity: 1;
+}
+.submit-btn{
+  padding: 12px 40px;
+  cursor: pointer;
+  border-radius: 21px;
+  border: none;
+  color: white;
+}
+.show-password{
+  height: 20px;
+  transform: translate(-8px,10px);
+  position: absolute;
+}
+svg.show-password:hover{
+  cursor: pointer;
+}

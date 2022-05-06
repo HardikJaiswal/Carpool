@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.Web", "Carpool.Web\Carpool.Web.csproj", "{D536CD57-4C8D-4332-A4D5-BEE8D984EEF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Web", "Carpool.Web\Carpool.Web.csproj", "{D536CD57-4C8D-4332-A4D5-BEE8D984EEF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.Models", "Carpool.Models\Carpool.Models.csproj", "{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.IContracts", "Carpool.IContracts\Carpool.IContracts.csproj", "{298F5D99-9CB5-41F4-8F64-856F59AA138F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.Services", "Carpool.Services\Carpool.Services.csproj", "{A25B2207-9944-41C7-B8FE-4EFC86B664B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{D536CD57-4C8D-4332-A4D5-BEE8D984EEF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D536CD57-4C8D-4332-A4D5-BEE8D984EEF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D536CD57-4C8D-4332-A4D5-BEE8D984EEF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{298F5D99-9CB5-41F4-8F64-856F59AA138F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{298F5D99-9CB5-41F4-8F64-856F59AA138F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{298F5D99-9CB5-41F4-8F64-856F59AA138F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{298F5D99-9CB5-41F4-8F64-856F59AA138F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A25B2207-9944-41C7-B8FE-4EFC86B664B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A25B2207-9944-41C7-B8FE-4EFC86B664B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A25B2207-9944-41C7-B8FE-4EFC86B664B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A25B2207-9944-41C7-B8FE-4EFC86B664B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
