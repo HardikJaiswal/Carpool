@@ -24,9 +24,10 @@ namespace Carpool.Services
             return new OkResult();
         }
 
-        public List<Ride> FindRides(string source, string destination, string date, string timeSlot)
+        public List<Ride> FindRides(string source, string destination, string date, int timeSlot)
         {
-            return _context.Rides.Where(r => r.PassengerId == 0).ToList();
+            return _context.Rides.Where(r => r.PassengerId == 0 && r.BookingDate == date 
+                && r.StartLocation == source && r.TimeSlot == timeSlot && r.EndLocation == destination).ToList();
         }
 
         public IActionResult OfferRide(int id, string startPoint, string endPoint, string date, int timeslot,

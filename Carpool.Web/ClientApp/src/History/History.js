@@ -1,7 +1,6 @@
 import React from "react";
-import ProfileOptions from "./profile-options";
 import axios from "axios";
-import ResultTile from "./result-tile";
+import ResultTile from "./RideTile";
 
 class History extends React.Component {
   constructor(props){
@@ -14,13 +13,27 @@ class History extends React.Component {
   }
 
   componentDidMount(){
-    axios.get("https://localhost:7165/api/UserService/getBookedRides",{id : this.id})
+      axios.get("https://localhost:7165/api/UserService/getBookedRides", {
+          params: {
+              id: this.id
+          },
+          headers: {
+              "Access-Control-Allow-Origin": "https://localhost:44302"
+          }
+      })
     .then((res) => {
       this.setState( (prevState) => {
         return {bookedRides : [...prevState.bookedRides, res.data]}
       })
     })
-    axios.get("https://localhost:7165/api/UserService/getOfferedRides",{id : this.id})
+      axios.get("https://localhost:7165/api/UserService/getOfferedRides", {
+          params: {
+              id: this.id
+          },
+          headers: {
+              "Access-Control-Allow-Origin": "https://localhost:44302"
+          }
+      })
     .then((res) => {
       this.setState( (prevState) => {
         return {offeredRides : [...prevState.offeredRides, res.data]}
@@ -31,7 +44,6 @@ class History extends React.Component {
   render(){
     return(
       <>
-      <ProfileOptions userName="temp name"/>
       <div className="history-container">
         <div className="history-results">
           <span className="bg-purple">Booked Rides</span><br/>

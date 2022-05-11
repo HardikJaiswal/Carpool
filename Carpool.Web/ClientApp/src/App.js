@@ -1,23 +1,24 @@
-import react from 'react';
 import './App.css';
-import GeneralHome from './General-Homepage/GeneralHome';
-import UserHome from './User-Homepage/UserHome';
-import Profile from './User-Homepage/Profile';
-import History from './User-Homepage/History';
+import './Dashboard/Dashboard.css';
 import { Route, Routes } from 'react-router-dom';
+import SignIn from './Authentication/SignIn';
+import Dashboard from './Dashboard/Dashboard';
+import RequiresAuth from './Authentication/RequiresAuth';
+import BookRide from './BookRide/BookRide';
+import OfferRide from './OfferRide/OfferRide';
+import History from './History/History';
+import ProfileDetails from './Profile/ProfileDetails';
 
-export default class App extends react.Component {
-    render() {
-        return (
-            <Routes>
-                <Route exact path='/' element={<GeneralHome />} />
-                <Route path='/user-home' element={
-                    <UserHome>
-                        <Route path='/history' element={<History />} />
-                        <Route path='/history' element={<Profile />} />
-                    </UserHome>
-                } />
-            </Routes>
-        );
-    }
+export default function App() {
+
+    return (
+        <Routes>
+            <Route path='/' element={<RequiresAuth><Dashboard /></RequiresAuth>} />
+            <Route path='/bookride' element={<RequiresAuth><BookRide /></RequiresAuth>} />
+            <Route path='/offerride' element={<RequiresAuth><OfferRide /></RequiresAuth>} />
+            <Route path='/history' element={<RequiresAuth><History /></RequiresAuth>} />
+            <Route path='/profile' element={<RequiresAuth><ProfileDetails /></RequiresAuth>} />
+            <Route path='/login' element={<SignIn />} />
+        </Routes>
+    );
 }

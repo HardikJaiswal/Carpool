@@ -4,8 +4,14 @@
 .bg-purple{
   background-color: #9319ff;
 }
-.service-menu{
-  margin: 11% 27%;
+.dashboard-body {
+    background-image: url('../Assets/rideoptionsbg.png');
+    height: 541px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+.service-menu {
+    margin-left: 27%;
 }
 .service-btn{
   display: inline-block;
@@ -33,11 +39,11 @@
 .ride-form{
   display: grid;
   grid-template-columns: 1fr 3fr;
-  margin: 65px 50px;
+  margin: 1% 5%;
   grid-column-gap: 6%;
 }
 .form{
-  padding: 30px;
+  padding: 25px;
 }
 .container{
   border: 3px solid gainsboro;
@@ -78,16 +84,16 @@
   margin-bottom: 6%;
 }
 .ride-form-2{
-  width: 38%;
-  padding: 40px;
+  width: 41%;
+  padding: 25px;
 }
 .seats{
   margin-right: 10px;
   margin-top: 10px;
   border-radius: 50%;
   border: 1px solid #a1a1a1;
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 45px;
   color: #a1a1a1;
   font-weight: bold;
   background-color: white;
@@ -140,7 +146,9 @@
 }
 .split-in-two{
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
+}
+.add-stop{
 
 }
 .match{
@@ -206,4 +214,7 @@ input:checked + .slider:before {
 .history-results{
   display: flex;
   flex-direction: column;
+}
+.ride-cost > span{
+    font-size: xx-large;
 }

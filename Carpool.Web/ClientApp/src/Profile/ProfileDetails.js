@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileOptions from "./profile-options";
+import ProfileOptions from "../Common/Profile";
 
 class Profile extends React.Component{
   
@@ -12,7 +12,7 @@ class Profile extends React.Component{
   }
 
   findMatches(){
-    fetch(`https://localhost:7165/api/UserService/getprofile?id=${this.state.id}`)
+    fetch(`${process.env.REACT_APP_API}/UserService/getprofile?id=${this.state.id}`)
     .then((response)=>response.json())
     .then(data=>{
       this.setState((prevState)=>{

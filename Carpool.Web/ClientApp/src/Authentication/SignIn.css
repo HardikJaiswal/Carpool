@@ -1,23 +1,35 @@
 .bg-orange{
   background-color: #ffac19;
 }
-.bg-purple{
+.bg-purple {
   background-color: #9319ff;
 }
-.general-home{
+.auth-page{
   display: grid;
   grid-template-columns: 2fr 1fr;
 }
 .sign-in{
   justify-self: center;
+  align-items: center;
   text-align: center;
-  margin-top: 15%;
+  padding-top: 15%;
+  width: 100%;
+  color: white;
+  background-image:  url('../Assets/formbg.png');
+}
+.sign-in > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 42%;
+    align-items: center;
 }
 .input-area{
   height: 45px;
   border-radius: 4px;
   width: 300px;
-  border: 1px solid grey;
+  border: 1px solid white;
+  background-color: white;
 }
 .input-text{
   border: none;
@@ -49,6 +61,7 @@ input:not(:focus):valid ~ .floating-text{
   border-radius: 21px;
   border: none;
   color: white;
+  font-weight: bold;
 }
 .show-password{
   height: 20px;
@@ -57,4 +70,18 @@ input:not(:focus):valid ~ .floating-text{
 }
 svg.show-password:hover{
   cursor: pointer;
+}
+.poster > div {
+    margin-left: 5%;
+    margin-top: 4%;
+    font-size: 25px;
+    font-weight: bolder;
+    color: #334053;
+    line-height: 50px;
+    letter-spacing: 5px;
+}
+.poster > div > em{
+    font-size : 80px;
+    line-height: 58px;
+    letter-spacing: normal;
 }
