@@ -5,11 +5,11 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Web", "Carpool.Web\Carpool.Web.csproj", "{D536CD57-4C8D-4332-A4D5-BEE8D984EEF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.Models", "Carpool.Models\Carpool.Models.csproj", "{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Models", "Carpool.Models\Carpool.Models.csproj", "{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.IContracts", "Carpool.IContracts\Carpool.IContracts.csproj", "{298F5D99-9CB5-41F4-8F64-856F59AA138F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.IContracts", "Carpool.IContracts\Carpool.IContracts.csproj", "{298F5D99-9CB5-41F4-8F64-856F59AA138F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.Services", "Carpool.Services\Carpool.Services.csproj", "{A25B2207-9944-41C7-B8FE-4EFC86B664B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Services", "Carpool.Services\Carpool.Services.csproj", "{A25B2207-9944-41C7-B8FE-4EFC86B664B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

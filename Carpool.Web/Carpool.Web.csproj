@@ -12,8 +12,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.16">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.16" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.6.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +32,34 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\Authentication\Login\Login.tsx" />
+    <None Remove="ClientApp\src\Authentication\Poster.tsx" />
+    <None Remove="ClientApp\src\Authentication\SignIn.tsx" />
+    <None Remove="ClientApp\src\Authentication\SignUp\SignUp.tsx" />
+    <None Remove="ClientApp\src\BookRide\BookRide.tsx" />
+    <None Remove="ClientApp\src\Common\FormHeader.tsx" />
+    <None Remove="ClientApp\src\Common\Profile.tsx" />
+    <None Remove="ClientApp\src\Common\RideMatchFirstForm.tsx" />
+    <None Remove="ClientApp\src\Common\RideTile.tsx" />
+    <None Remove="ClientApp\src\Dashboard\Dashboard.tsx" />
+    <None Remove="ClientApp\src\History\History.tsx" />
+    <None Remove="ClientApp\src\Local Service\AuthService.ts" />
+    <None Remove="ClientApp\src\OfferRide\OfferRide.tsx" />
+    <None Remove="ClientApp\src\Profile\ProfileDetails.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Carpool.Services\Carpool.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\Authentication\Login\Login.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Update="ClientApp\src\Common\RideTile.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -18,19 +18,28 @@ namespace Carpool.Services
             _context = serviceContext;
         }
 
-        public IActionResult AddUser(string email, string password)
+        public APIResponse AddUser(string email, string password)
         {
-            var user = new User()
+            int res;
+            try
             {
-                FirstName = "Temp",
-                LastName = "Temp",
-                Email = email,
-                Passkey = password,
-                UserId = GenerateUserID()
-            };
-            _context.Person?.Add(user);
-            _context.SaveChanges();
-            return new OkResult();
+                var user = new User()
+                {
+                    FirstName = "Temp",
+                    LastName = "Temp",
+                    Email = email,
+                    Passkey = password,
+                    UserId = GenerateUserID()
+                };
+                res = user.UserId;
+                _context.Person?.Add(user);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                return new APIResponse { IsSuccess = false, Message = e.Message };
+            }
+            return new APIResponse { IsSuccess = true, Data =  res };
         }
 
         private bool IsUserIdPresent(int id)
@@ -47,28 +56,97 @@ namespace Carpool.Services
             return newId;
         }
 
-        public JsonResult GetProfile(int id)
+        public APIResponse GetProfile(int id)
         {
-            var user = _context.Person?.FirstOrDefault(u => u.UserId == id);
-            return new JsonResult(user);
+            User res;
+            try
+            {
+                res = _context.Person?.FirstOrDefault(u => u.UserId == id);
+            }catch(Exception e)
+            {
+                return new APIResponse { IsSuccess=false, Message = e.Message };
+            }
+            return new APIResponse { IsSuccess = true, Data = res };
         }
 
-        public JsonResult GetRides(int id, bool isBooked)
+        public APIResponse GetRides(int id, bool isBookedRides)
         {
-            if (isBooked)
+            dynamic res;
+            try
             {
-                return new JsonResult(_context.Rides?.Where(r => r.PassengerId == id).ToList());
+                if (isBookedRides)
+                {
+                    res = (from r in _context.RideBooked
+                           join p in _context.Person on r.OwnerId equals p.UserId
+                           where r.PassengerId == id
+                           select new
+                           {
+                               r.StartLocation,
+                               r.EndLocation,
+                               r.Price,
+                               r.BookingDate,
+                               r.TimeSlot,
+                               r.Seats,
+                               p.FirstName,
+                               p.LastName
+                           }).ToList();
+                }
+                else
+                {
+                    res = (from r in _context.RideBooked
+                           join p in _context.Person on r.OwnerId equals p.UserId
+                           where r.OwnerId == id
+                           select new
+                           {
+                               r.StartLocation,
+                               r.EndLocation,
+                               r.Price,
+                               r.BookingDate,
+                               r.TimeSlot,
+                               r.Seats,
+                               p.FirstName,
+                               p.LastName
+                           }).ToList();
+                }
             }
-            else
+            catch (Exception e)
             {
-                return new JsonResult(_context.Rides?.Where(r => r.OwnerId == id).ToList());
+                return new APIResponse { IsSuccess = false, Message = e.Message };
             }
+            return new APIResponse { IsSuccess = true, Data = res };
         }
 
-        public int GetUserIdIfPresent(string email, string password)
+        public APIResponse GetUserIdIfPresent(string email, string password)
         {
-            var user = _context.Person?.FirstOrDefault(p => p.Email == email && p.Passkey == password);
-            return user != null ? user.UserId : 0;
+            int res;
+            try
+            {
+                var person = _context.Person.FirstOrDefault(p => p.Email == email && p.Passkey == password);
+                if (person == null) 
+                    return new APIResponse { IsSuccess = false, Message = "Wrong ID or password" };
+                else 
+                    res = person.UserId;
+            }
+            catch(Exception e)
+            {
+                return new APIResponse { IsSuccess = false, Message = e.Message };
+            }
+            return new APIResponse { IsSuccess = true, Data = res };
+        }
+
+        public APIResponse UpdateName(int id, string firstName, string lastName)
+        {
+            //try
+            //{
+                var user = _context.Person.FirstOrDefault(p => p.UserId == id);
+                user.FirstName = firstName;
+                user.LastName = lastName;
+                _context.SaveChanges();
+            //}catch(Exception e)
+            //{
+            //    return new APIResponse() { IsSuccess = false, Message = e.Message };
+            //}
+            return new APIResponse() { IsSuccess = true };
         }
     }
 }

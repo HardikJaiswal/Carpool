@@ -16,38 +16,73 @@ namespace Carpool.Services
             _context = serviceContext;
         }
 
-        public IActionResult BookRide(int rideId, int bookerId)
+        public APIResponse BookRide(int rideId, int bookerId)
         {
-            var cur = _context.Rides?.FirstOrDefault(r => r.RideId == rideId);
-            cur.PassengerId = bookerId;
-            _context.SaveChanges();
-            return new OkResult();
-        }
-
-        public List<Ride> FindRides(string source, string destination, string date, int timeSlot)
-        {
-            return _context.Rides.Where(r => r.PassengerId == 0 && r.BookingDate == date 
-                && r.StartLocation == source && r.TimeSlot == timeSlot && r.EndLocation == destination).ToList();
-        }
-
-        public IActionResult OfferRide(int id, string startPoint, string endPoint, string date, int timeslot,
-             int price, int seats)
-        {
-            Ride cur = new Ride()
+            try
             {
-                RideId = GenerateId(),
-                OwnerId = id,
-                PassengerId = 0,
-                StartLocation = startPoint,
-                EndLocation = endPoint,
-                BookingDate = date,
-                TimeSlot = timeslot,
-                Price = price,
-                Seats = seats
+                var cur = _context.RideBooked?.FirstOrDefault(r => r.RideId == rideId);
+                cur.PassengerId = bookerId;
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                return new APIResponse { IsSuccess = false, Message = ex.Message };
+            }
+            return new APIResponse { IsSuccess = true };
+        }
+
+        public APIResponse GetAvailableRides(string source, string destination, string date, int timeSlot)
+        {
+            dynamic res;
+            try
+            {
+                res = (from r in _context.RideBooked
+                       join p in _context.Person on r.OwnerId equals p.UserId
+                       where r.PassengerId == 0 && r.BookingDate == date && r.StartLocation == source && 
+                            r.TimeSlot == timeSlot && r.EndLocation == destination
+                       select new
+                       {
+                           r.RideId,
+                           r.StartLocation,
+                           r.EndLocation,
+                           r.Price,
+                           r.BookingDate,
+                           r.TimeSlot,
+                           r.Seats,
+                           p.FirstName,
+                           p.LastName
+                       }).ToList();
+            }catch (Exception e)
+            {
+                return new APIResponse { IsSuccess = false, Message = e.Message };
+            }
+            return new APIResponse { Data = res, IsSuccess = true };
+        }
+
+        public APIResponse OfferRide(int ownerId, string startLocation, string endLocation, string bookingDate,
+            int timeSlot, int seats, int price)
+        {
+            Ride ride = new Ride
+            {
+                OwnerId = ownerId,
+                StartLocation = startLocation,
+                EndLocation = endLocation,
+                BookingDate = bookingDate,
+                TimeSlot = timeSlot,
+                Seats = seats,
+                Price = price
             };
-            _context.Rides?.Add(cur);
-            _context.SaveChanges();
-            return new OkResult();
+            try
+            {
+                ride.RideId = GenerateId();
+                ride.PassengerId = 0;
+                _context.RideBooked?.Add(ride);
+                _context.SaveChanges();
+            }catch(Exception e)
+            {
+                return new APIResponse { IsSuccess=false, Message = e.Message };
+            }
+            return new APIResponse { IsSuccess = true };
         }
 
         private int GenerateId()
@@ -61,7 +96,7 @@ namespace Carpool.Services
 
         private bool IsRideIdPresent(int id)
         {
-            return _context.Rides?.FirstOrDefault(r => r.RideId == id) != null;
+            return _context.RideBooked?.FirstOrDefault(r => r.RideId == id) != null;
         }
     }
 }

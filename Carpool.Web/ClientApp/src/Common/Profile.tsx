@@ -1,14 +1,14 @@
-import {Link, useNavigate} from 'react-router-dom';
+﻿import * as React from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import Popup from "reactjs-popup";
-import { useAuth } from '../Authentication/Auth';
+import { setId } from "../Local Service/AuthService.ts";
 
 function Profile(props) {
 
-    const auth = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        auth.logout();
+        setId(0);
         navigate('/login');
     }
 

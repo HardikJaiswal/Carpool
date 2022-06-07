@@ -12,7 +12,7 @@ namespace Carpool.Services
     {
         public DbSet<User> Person { get; set; }
 
-        public DbSet<Ride> Rides { get; set; }
+        public DbSet<Ride> RideBooked { get; set; }
 
         public DbSet<Stops> Stops { get; set; }
 

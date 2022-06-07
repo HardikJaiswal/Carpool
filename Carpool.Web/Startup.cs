@@ -23,24 +23,22 @@ namespace Carpool.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy( (policy) =>
-                {
-                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-                });
-            });
-            var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ServiceContext>(options => options.UseSqlServer(connection));
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IRideService, RideService>();
-            // In production, the React files will be served from this directory
            services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
             .Json.ReferenceLoopHandling.Ignore)
             .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
-            = new DefaultContractResolver());
+            = new DefaultContractResolver());   
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ServiceContext>(options => options.UseSqlServer(connection));
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IRideService, RideService>();
+
+            // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
@@ -71,7 +69,8 @@ namespace Carpool.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "api/{controller}/{action}/{id?}"
+                );
             });
 
             app.UseSpa(spa =>

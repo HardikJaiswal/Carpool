@@ -10,11 +10,11 @@ namespace Carpool.IContracts
 {
     public interface IRideService
     {
-        List<Ride> FindRides(string source, string destination, string date, int timeSlot);
+        APIResponse GetAvailableRides(string source, string destination, string date, int timeSlot);
 
-        IActionResult BookRide(int rideId, int bookerId);
+        APIResponse BookRide(int rideId, int bookerId);
 
-        IActionResult OfferRide(int id, string startPoint, string endPoint, string date, int timeslot,
-             int price, int seats);
+        APIResponse OfferRide(int ownerId, string startLocation, string endLocation, string bookingDate,
+            int timeSlot, int seats, int price);
     }
 }

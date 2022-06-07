@@ -1,23 +1,27 @@
-import { useNavigate } from 'react-router-dom';
-import './Dashboard.css';
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var react_router_dom_1 = require("react-router-dom");
+require("./Dashboard.css");
 function Dashboard() {
-
-    const navigate = useNavigate();
-
-    const navigateTo = (path) => {
+    var navigate = (0, react_router_dom_1.useNavigate)();
+    var navigateTo = function (path) {
         navigate(path);
-    }
-
-    return (
-        <div className="dashboard-body">
-            <main className="service-menu">
-                <h1><b>Hey {user.firstName}!</b></h1>&nbsp;<br />
-                <div className="service-btn bg-purple" onClick={() => navigateTo('/bookride') }>Book a ride</div>
-                <div className="service-btn bg-orange" onClick={() => navigateTo('/offerride') }>Offer a ride</div>
-            </main>
-        </div>
-    );
+    };
+    var user = {
+        firstName: "there"
+    };
+    return (React.createElement("div", { className: "dashboard-body" },
+        React.createElement("main", { className: "service-menu" },
+            React.createElement("h1", null,
+                React.createElement("b", null,
+                    "Hey ",
+                    user.firstName,
+                    "!")),
+            "\u00A0",
+            React.createElement("br", null),
+            React.createElement("div", { className: "service-btn bg-purple", onClick: function () { return navigateTo('/bookride'); } }, "Book a ride"),
+            React.createElement("div", { className: "service-btn bg-orange", onClick: function () { return navigateTo('/offerride'); } }, "Offer a ride"))));
 }
-
-export default Dashboard;
+exports.default = Dashboard;
+//# sourceMappingURL=Dashboard.js.map

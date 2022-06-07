@@ -1,36 +1,42 @@
 ﻿using Carpool.IContracts;
+using Carpool.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Carpool.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/rideservice")]
     [ApiController]
     public class RidesController : ControllerBase
     {
-        private readonly IRideService _rideService;
+        private readonly IRideService RideService;
 
         public RidesController([FromServices] IRideService rideService)
         {
-            _rideService = rideService;
+            this.RideService = rideService;
         }
 
         [HttpGet("findride")]
-        public JsonResult FindRides(string source, string destination, string date, int timeSlot)
+        public dynamic FindRides(string startLocation, string endLocation, string bookingDate, int timeSlot)
         {
-            return new JsonResult(null);
+            var res = RideService.GetAvailableRides(startLocation, endLocation, bookingDate, timeSlot);
+            return res.IsSuccess ? res.Data : null;
         }
 
         [HttpPost("offerride")]
-        public IActionResult OfferRide(int id, string startPoint, string endPoint, string date, int timeslot,
-             int price, int seats)
+        public IActionResult OfferRide(int OwnerId, string StartLocation, string EndLocation, string BookingDate,
+            int TimeSlot, int Seats, int Price)
         {
-            return _rideService.OfferRide(id, startPoint, endPoint, date, timeslot, price, seats);
+            var res = RideService.OfferRide(OwnerId,StartLocation,EndLocation,BookingDate,TimeSlot,Seats,Price);
+            return res.IsSuccess ? Ok() : BadRequest(res.Message);
         }
 
         [HttpPatch("bookride")]
         public IActionResult BookRide(int rideId, int bookerId)
         {
-            return _rideService.BookRide(rideId, bookerId);
+            var res = RideService.BookRide(rideId, bookerId);
+            return res.IsSuccess ? Ok() : BadRequest(res.Message);
         }
 
     }

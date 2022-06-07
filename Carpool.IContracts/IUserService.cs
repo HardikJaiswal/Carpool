@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Carpool.Models;
+using System.Collections.Generic;
 
 namespace Carpool.IContracts
 {
     public interface IUserService
     {
-        JsonResult GetProfile(int id);
+        APIResponse GetProfile(int id);
 
-        IActionResult AddUser(string email, string password);
+        APIResponse AddUser(string email, string password);
 
-        int GetUserIdIfPresent(string email, string password);
+        APIResponse GetUserIdIfPresent(string email, string password);
 
-        JsonResult GetRides(int id, bool isBooked);
+        APIResponse GetRides(int id, bool isBooked);
+
+        APIResponse UpdateName(int id, string firstName, string lastName);
     }
 }

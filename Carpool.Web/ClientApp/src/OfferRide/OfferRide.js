@@ -1,29 +1,27 @@
-import FormHeader from "../Common/FormHeader";
-import RideMatchFirstForm from "../Common/RideMatchFirstForm";
-import RideMatchSecondForm from "../Common/RideMatchSecondForm";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var FormHeader_1 = require("../Common/FormHeader");
+var RideMatchFirstForm_1 = require("../Common/RideMatchFirstForm");
+var RideMatchSecondForm_1 = require("../Common/RideMatchSecondForm");
 function OfferRide() {
-    let firstFormParameters = {
+    var firstFormParameters = {
         source: '',
         destination: '',
         date: '',
         timeslot: -1
     };
-
-    const setFirstFormValues = (field, value) => {
-        formParameters[field] = value;
-    }
-    return (
-        <div className="ride-form">
-            <div className="container form">
-                <FormHeader isBooking={false} /><br /><br />
-                <form>
-                    <RideMatchFirstForm isBooking={false} fillDetails={(field, value) => setFirstFormValues(field, value)} />
-                </form>
-            </div>
-            <RideMatchSecondForm />
-        </div>
-    );
+    var setFirstFormValues = function (field, value) {
+        firstFormParameters[field] = value;
+    };
+    return (React.createElement("div", { className: "ride-form" },
+        React.createElement("div", { className: "container form" },
+            React.createElement(FormHeader_1.default, { isBooking: false }),
+            React.createElement("br", null),
+            React.createElement("br", null),
+            React.createElement("form", null,
+                React.createElement(RideMatchFirstForm_1.default, { isBooking: false, fillDetails: function (field, value) { return setFirstFormValues(field, value); } }))),
+        React.createElement(RideMatchSecondForm_1.default, null)));
 }
-
-export default OfferRide;
+exports.default = OfferRide;
+//# sourceMappingURL=OfferRide.js.map
