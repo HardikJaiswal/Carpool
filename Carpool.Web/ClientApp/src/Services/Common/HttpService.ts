@@ -10,7 +10,7 @@ export default class HttpService {
         return axios.patch(url);
     }
 
-    public postData(url: string): Promise<any> {
-        return axios.post(url);
+    public postData(url: string, body: any): Promise<any> {
+        return axios.post(url, body);
     }
 }

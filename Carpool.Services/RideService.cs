@@ -1,102 +1,70 @@
-﻿using Carpool.IContracts;
-using Carpool.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Carpool.Contracts;
+using Carpool.Concerns;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Carpool.Services
 {
     public class RideService : IRideService
     {
-        private readonly ServiceContext _context;
+        private readonly DbService service;
+        private readonly string tableName = "[dbo].[RideBooked]";
 
-        public RideService(ServiceContext serviceContext)
+        public RideService(DbService DbService)
         {
-            _context = serviceContext;
+            service = DbService;
         }
 
-        public APIResponse BookRide(int rideId, int bookerId)
+        public APIResponse BookRide(long rideId, long bookerId)
         {
+            APIResponse response = new();
             try
             {
-                var cur = _context.RideBooked?.FirstOrDefault(r => r.RideId == rideId);
-                cur.PassengerId = bookerId;
-                _context.SaveChanges();
+                Ride ride = new()
+                {
+                    PassengerId = bookerId,
+                    Id = rideId
+                };
+                service.Update(rideId, tableName, ride);
+                response.IsSuccess = true;
             }
             catch(Exception ex)
             {
-                return new APIResponse { IsSuccess = false, Message = ex.Message };
+                response.IsSuccess = false;
+                response.Message = ex.Message;
             }
-            return new APIResponse { IsSuccess = true };
+            return response;
         }
 
-        public APIResponse GetAvailableRides(string source, string destination, string date, int timeSlot)
+        public APIResponse GetAvailableRides(AvailableRideRequest request)
         {
-            dynamic res;
+            APIResponse response = new APIResponse();
             try
             {
-                res = (from r in _context.RideBooked
-                       join p in _context.Person on r.OwnerId equals p.UserId
-                       where r.PassengerId == 0 && r.BookingDate == date && r.StartLocation == source && 
-                            r.TimeSlot == timeSlot && r.EndLocation == destination
-                       select new
-                       {
-                           r.RideId,
-                           r.StartLocation,
-                           r.EndLocation,
-                           r.Price,
-                           r.BookingDate,
-                           r.TimeSlot,
-                           r.Seats,
-                           p.FirstName,
-                           p.LastName
-                       }).ToList();
-            }catch (Exception e)
-            {
-                return new APIResponse { IsSuccess = false, Message = e.Message };
+                response.Data = service.GetRideInfo(request);
+                response.IsSuccess = true;
             }
-            return new APIResponse { Data = res, IsSuccess = true };
+            catch (Exception e)
+            {
+                response.IsSuccess = false;
+                response.Message = e.Message;
+            }
+            return response;
         }
 
-        public APIResponse OfferRide(int ownerId, string startLocation, string endLocation, string bookingDate,
-            int timeSlot, int seats, int price)
+        public APIResponse OfferRide(Ride ride)
         {
-            Ride ride = new Ride
-            {
-                OwnerId = ownerId,
-                StartLocation = startLocation,
-                EndLocation = endLocation,
-                BookingDate = bookingDate,
-                TimeSlot = timeSlot,
-                Seats = seats,
-                Price = price
-            };
+            APIResponse response = new APIResponse();
             try
             {
-                ride.RideId = GenerateId();
                 ride.PassengerId = 0;
-                _context.RideBooked?.Add(ride);
-                _context.SaveChanges();
+                service.Add(tableName, ride);
+                response.IsSuccess = true;
             }catch(Exception e)
             {
-                return new APIResponse { IsSuccess=false, Message = e.Message };
+                response.IsSuccess = false;
+                response.Message = e.Message;
             }
-            return new APIResponse { IsSuccess = true };
-        }
-
-        private int GenerateId()
-        {
-            var random = new Random();
-            int newId = random.Next(100);
-            while (IsRideIdPresent(newId))
-                newId = random.Next(100);
-            return newId;
-        }
-
-        private bool IsRideIdPresent(int id)
-        {
-            return _context.RideBooked?.FirstOrDefault(r => r.RideId == id) != null;
+            return response;
         }
     }
 }

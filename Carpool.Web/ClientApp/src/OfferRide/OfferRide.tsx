@@ -9,7 +9,7 @@ import { Navigate } from "react-router-dom";
 class OfferRide extends React.Component{
     service = new RideService();
     state = {
-        seatPos: 0,
+        seatCount: 0,
         totalStops: 1,
         displaySecondForm: false,
         redirect: false,
@@ -23,7 +23,7 @@ class OfferRide extends React.Component{
         endLocation: '',
         bookingDate: '',
         timeSlot: -1,
-        seats: this.state.seatPos + 1,
+        seats: this.state.seatCount + 1,
         stops: [],
         userId: getId(),
         price: 100
@@ -45,10 +45,9 @@ class OfferRide extends React.Component{
         event.preventDefault();
         const div = this.stopsDiv.current;
         for (let i = 0; i < div.children.length; i++) {
-            //if (div.children[i].tagName === "input") {
-            //    this.FormParameters.stops.push(div.children[i].value);
-            //}
-            console.log(div.children[i].children[2].tagName);
+            if (div.children[i].tagName === "Input") {
+                this.FormParameters.stops.push(div.children[i].value);
+            }
         }
         this.service.offerRide(this.FormParameters)
             .then((res) => {
@@ -67,7 +66,7 @@ class OfferRide extends React.Component{
     setSeatCount = (event, pos) => {
         event.preventDefault();
         this.FormParameters.seats = pos + 1;
-        this.setState({seatPos: pos});
+        this.setState({seatCount: pos});
     }
     secondForm = (
         <div>
@@ -98,7 +97,7 @@ class OfferRide extends React.Component{
                         <label>Availbale Seats</label><br />
                         {Array.from(Array(4), (_, index) => index + 1).map((item, pos) => {
                             let classArr = ['seats'];
-                            if (pos === this.state.seatPos) classArr.push('seat-selected');
+                            if (pos === this.state.seatCount) classArr.push('seat-selected');
                             return (
                                 <button className={classArr.join(' ')} key={pos} onClick={(e) => this.setSeatCount(e,pos)}>
                                     {item}

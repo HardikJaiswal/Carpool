@@ -1,6 +1,5 @@
-﻿using Carpool.IContracts;
-using Carpool.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Carpool.Contracts;
+using Carpool.Concerns;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -19,44 +18,44 @@ namespace Carpool.Web.Controllers
         }
 
         [HttpGet("getprofile")]
-        public User GetProfile(int id)
+        public User GetProfile(long id)
         {
             var res = UserService.GetProfile(id);
             return res.IsSuccess ? res.Data : null;
         }
 
         [HttpPost("create")]
-        public int AddUser(string email, string password)
+        public long AddUser(string email, string password)
         {
             var res = UserService.AddUser(email, password);
             return res.IsSuccess ? res.Data : 0;
         }
 
         [HttpGet("getuser")]
-        public int GetUserIdIfPresent(string email, string password)
+        public long GetUserIdIfPresent(string email, string password)
         {
             var res = UserService.GetUserIdIfPresent(email, password);
             return res.IsSuccess ? res.Data : 0;
         }
 
         [HttpGet("getBookedRides")]
-        public dynamic GetBookedRides(int id)
+        public IEnumerable<RideInfo> GetBookedRides(long id)
         {
             var res = UserService.GetRides(id, true);
             return res.IsSuccess ? res.Data : null;
         }
 
         [HttpGet("getOfferedRides")]
-        public dynamic GetOfferedRides(int id)
+        public IEnumerable<RideInfo> GetOfferedRides(long id)
         {
             var res = UserService.GetRides(id, false);
             return res.IsSuccess ? res.Data : null;
         }
 
         [HttpPatch("updateNames")]
-        public IActionResult UpdateName(int Id, string FirstName, string LastName)
+        public IActionResult UpdateName(long id, string firstName, string lastName)
         {
-            return UserService.UpdateName(Id, FirstName, LastName).IsSuccess ? Ok() : BadRequest();
+            return UserService.UpdateName(id, firstName, lastName).IsSuccess ? Ok() : BadRequest();
         }
     }
 }

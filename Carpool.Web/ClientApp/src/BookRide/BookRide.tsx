@@ -43,11 +43,11 @@ export default class BookRide extends React.Component {
     }
 
     bookSelectedRide = (pos) => {
-        this.service.bookRide(this.state.matches[pos].RideId, this.auth)
+        this.service.bookRide(this.state.matches[pos].Id, this.auth)
             .then((res) => {
                 console.log(res.status);
                 if (res.status == 200) alert('Ride Booked Successfully');
-                else alert("You clicked but nothing happened");
+                else alert("Some error occured");
                 this.setState({ redirect: true });
             });
     }

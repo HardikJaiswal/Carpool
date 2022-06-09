@@ -18,11 +18,13 @@ class SignUp extends React.Component {
     constructor(props) {
         super(props);
     }
-    fetchData() {
-        this.service.getUserProfile()
+    fetchData(id: number) {
+        this.service.getUserProfile(id)
             .then((res) => {
                 res = res.data;
                 setName(res.FirstName, res.LastName);
+                this.props.onSuccess(id);
+                this.setState({ redirect: true });
             });
     }
 
@@ -39,9 +41,7 @@ class SignUp extends React.Component {
                     id = res.data;
                     if (id != null && id != undefined && id != 0) {
                         setId(id);
-                        this.fetchData();
-                        this.props.onSuccess(id);
-                        this.setState({ redirect: true });
+                        this.fetchData(id);
                     } else {
                         console.log("Request not succeded");
                     }

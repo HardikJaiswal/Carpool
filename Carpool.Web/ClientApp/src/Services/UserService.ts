@@ -28,6 +28,6 @@ export class UserService {
     }
 
     updateName(fName: string, lName: string, id: number) {
-        return this.httpService.patchData(`/api/userservice/updateNames?FirstName=${fName}&LastName=${lName}&Id=${id}`);
+        return this.httpService.patchData(`/api/userservice/updateNames?firstName=${fName}&lastName=${lName}&id=${id}`);
     }
 }

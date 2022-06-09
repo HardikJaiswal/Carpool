@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Carpool.Models;
-using System.Collections.Generic;
+﻿using Carpool.Concerns;
 
-namespace Carpool.IContracts
+namespace Carpool.Contracts
 {
     public interface IUserService
     {
-        APIResponse GetProfile(int id);
+        APIResponse GetProfile(long id);
 
         APIResponse AddUser(string email, string password);
 
         APIResponse GetUserIdIfPresent(string email, string password);
 
-        APIResponse GetRides(int id, bool isBooked);
+        APIResponse GetRides(long id, bool isBooked);
 
-        APIResponse UpdateName(int id, string firstName, string lastName);
+        APIResponse UpdateName(long id, string firstName, string lastName);
     }
 }

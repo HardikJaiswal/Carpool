@@ -1,20 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Carpool.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Carpool.Concerns;
 
-namespace Carpool.IContracts
+namespace Carpool.Contracts
 {
     public interface IRideService
     {
-        APIResponse GetAvailableRides(string source, string destination, string date, int timeSlot);
+        APIResponse GetAvailableRides(AvailableRideRequest request);
 
-        APIResponse BookRide(int rideId, int bookerId);
+        APIResponse BookRide(long rideId, long bookerId);
 
-        APIResponse OfferRide(int ownerId, string startLocation, string endLocation, string bookingDate,
-            int timeSlot, int seats, int price);
+        APIResponse OfferRide(Ride ride);
     }
 }

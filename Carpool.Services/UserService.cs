@@ -1,26 +1,22 @@
-﻿using Carpool.IContracts;
-using Carpool.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Carpool.Contracts;
+using Carpool.Concerns;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Carpool.Services
 {
     public class UserService : IUserService
     {
-        private readonly ServiceContext _context;
+        private readonly DbService service;
+        private readonly string tableName = "[dbo].[Person]";
 
-        public UserService(ServiceContext serviceContext)
+        public UserService(DbService dbService)
         {
-            _context = serviceContext;
+            service = dbService;
         }
 
         public APIResponse AddUser(string email, string password)
         {
-            int res;
+            APIResponse response = new APIResponse();
             try
             {
                 var user = new User()
@@ -29,124 +25,85 @@ namespace Carpool.Services
                     LastName = "Temp",
                     Email = email,
                     Passkey = password,
-                    UserId = GenerateUserID()
                 };
-                res = user.UserId;
-                _context.Person?.Add(user);
-                _context.SaveChanges();
+                response.Data = service.Add(tableName, user);
+                response.IsSuccess = true;
             }
             catch (Exception e)
             {
-                return new APIResponse { IsSuccess = false, Message = e.Message };
+                response.IsSuccess = false;
+                response.Message = e.Message;
             }
-            return new APIResponse { IsSuccess = true, Data =  res };
+            return response;
         }
 
-        private bool IsUserIdPresent(int id)
+        public APIResponse GetProfile(long id)
         {
-            return _context.Person?.FirstOrDefault(u => u.UserId == id) != null;
-        }
-
-        private int GenerateUserID()
-        {
-            var random = new Random();
-            int newId = random.Next(100);
-            while (IsUserIdPresent(newId))
-                newId = random.Next(100);
-            return newId;
-        }
-
-        public APIResponse GetProfile(int id)
-        {
-            User res;
+            APIResponse response = new APIResponse();
             try
             {
-                res = _context.Person?.FirstOrDefault(u => u.UserId == id);
+                response.Data = service.GetUserInfo(id, tableName);
+                response.IsSuccess = true;
             }catch(Exception e)
             {
-                return new APIResponse { IsSuccess=false, Message = e.Message };
+                response.IsSuccess = false;
+                response.Message = e.Message; ;
             }
-            return new APIResponse { IsSuccess = true, Data = res };
+            return response;
         }
 
-        public APIResponse GetRides(int id, bool isBookedRides)
+        public APIResponse GetRides(long id, bool isBookedRides)
         {
-            dynamic res;
+            APIResponse response = new APIResponse();
             try
             {
-                if (isBookedRides)
-                {
-                    res = (from r in _context.RideBooked
-                           join p in _context.Person on r.OwnerId equals p.UserId
-                           where r.PassengerId == id
-                           select new
-                           {
-                               r.StartLocation,
-                               r.EndLocation,
-                               r.Price,
-                               r.BookingDate,
-                               r.TimeSlot,
-                               r.Seats,
-                               p.FirstName,
-                               p.LastName
-                           }).ToList();
-                }
-                else
-                {
-                    res = (from r in _context.RideBooked
-                           join p in _context.Person on r.OwnerId equals p.UserId
-                           where r.OwnerId == id
-                           select new
-                           {
-                               r.StartLocation,
-                               r.EndLocation,
-                               r.Price,
-                               r.BookingDate,
-                               r.TimeSlot,
-                               r.Seats,
-                               p.FirstName,
-                               p.LastName
-                           }).ToList();
-                }
+                response.Data = service.GetRideInfo(null,id,isBookedRides);
+                response.IsSuccess = true;
             }
             catch (Exception e)
             {
-                return new APIResponse { IsSuccess = false, Message = e.Message };
+                response.IsSuccess = false;
+                response.Message = e.Message;
             }
-            return new APIResponse { IsSuccess = true, Data = res };
+            return response;
         }
 
         public APIResponse GetUserIdIfPresent(string email, string password)
         {
-            int res;
+            APIResponse response = new();
             try
             {
-                var person = _context.Person.FirstOrDefault(p => p.Email == email && p.Passkey == password);
-                if (person == null) 
-                    return new APIResponse { IsSuccess = false, Message = "Wrong ID or password" };
-                else 
-                    res = person.UserId;
+                response.Data = service.GetUserId(email, password, tableName);
+                response.IsSuccess = true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return new APIResponse { IsSuccess = false, Message = e.Message };
+                response.IsSuccess = false;
+                response.Message = e.Message;
             }
-            return new APIResponse { IsSuccess = true, Data = res };
+            return response;
         }
 
-        public APIResponse UpdateName(int id, string firstName, string lastName)
+        public APIResponse UpdateName(long id, string firstName, string lastName)
         {
-            //try
-            //{
-                var user = _context.Person.FirstOrDefault(p => p.UserId == id);
-                user.FirstName = firstName;
-                user.LastName = lastName;
-                _context.SaveChanges();
-            //}catch(Exception e)
-            //{
-            //    return new APIResponse() { IsSuccess = false, Message = e.Message };
-            //}
-            return new APIResponse() { IsSuccess = true };
+            APIResponse response = new();
+            try
+            {
+                User user = new()
+                {
+                    Id = id,
+                    FirstName = firstName,
+                    LastName = lastName
+                };
+                service.Update(id, tableName, user);
+                response.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                response.IsSuccess = false;
+                response.Message = e.Message;
+            }
+            return response;
         }
     }
 }

@@ -26,14 +26,13 @@ class History extends React.Component {
         this.service.getBookedRide(this.id)
             .then((res) => {
                 console.log(res.data);
-                this.setState({ bookedRides: res.data, loading: false });
+                this.setState({ bookedRides: Array.from(res.data), loading: false });
             })
         this.service.getOfferedRide(this.id)
             .then((res) => {
                 console.log(res.data);
-                this.setState({ offeredRides: res.data, loading: false });
+                this.setState({ offeredRides: Array.from(res.data), loading: false });
             })
-        console.log(this.state);
     }
 
     render() {
@@ -48,13 +47,13 @@ class History extends React.Component {
                         <div className="history-results">
                             <><span className="bg-purple">Booked Rides</span><br />
                                 {this.state.bookedRides.map((item, pos) => {
-                                    <RideTile info={item} key={pos} />
+                                    return <RideTile key={pos} info={item} isHistory={true} onclick={() => { } } />
                                 })}</>
                         </div>
                         <div className="history-results">
                             <><span className="bg-orange">Offered Rides</span><br />
                                 {this.state.offeredRides.map((item, pos) => {
-                                    <RideTile info={item} key={pos} />
+                                    return <RideTile key={pos} info={item} isHistory={true} onclick={() => { }} />
                                 })}</>
                         </div>
                     </div>}

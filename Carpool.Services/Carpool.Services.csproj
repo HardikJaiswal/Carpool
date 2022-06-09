@@ -16,11 +16,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="RepoDb" Version="1.12.10" />
+    <PackageReference Include="RepoDb.SqlServer" Version="1.1.5" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Carpool.IContracts\Carpool.IContracts.csproj" />
+    <ProjectReference Include="..\Carpool.IContracts\Carpool.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

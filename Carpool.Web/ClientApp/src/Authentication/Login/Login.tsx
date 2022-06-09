@@ -34,6 +34,8 @@ export default class LogIn extends React.Component {
                         this.props.onSuccess(res);
                         this.setState({ redirect: true });
                     });
+            } else {
+                console.log("Error in logging in");
             }
         }, (exception => {
             console.log(exception);

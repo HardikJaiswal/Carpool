@@ -31,15 +31,7 @@ export class RideService {
             Seats: ride.seats,
             Price: ride.price
         };
-        let queryString = "";
-        let keyNames = Object.keys(rideDetails);
-        console.log(rideDetails);
-        for (let i = 0; i < keyNames.length; i++) {
-            if (i === keyNames.length - 1) queryString += `${keyNames[i]}=${rideDetails[keyNames[i]]}`;
-            else queryString += `${keyNames[i]}=${rideDetails[keyNames[i]]}&`;
-        }
-        console.log(queryString);
-        return this.httpService.postData(`/api/rideservice/offerride?${queryString}`);
+        return this.httpService.postData(`/api/rideservice/offerride`,rideDetails);
     }
 
 }

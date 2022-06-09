@@ -5,7 +5,10 @@ function RideTile(props) {
     const timings = ['5am-9am', '9am-12pm', '12pm-3pm', '3pm-6pm', '6pm-9pm'];
     return (
         <div className="container match" onClick={() => props.onclick()}>
-            <b>{item.FirstName} {item.LastName}</b>
+            <div className="tile-header">
+                <b>{item.FirstName} {item.LastName}</b>
+                <img src={require("../Assets/profile-photo.jpg")} />
+            </div>
             <div className="split-in-two">
                 <div>
                     <label>From</label><br />

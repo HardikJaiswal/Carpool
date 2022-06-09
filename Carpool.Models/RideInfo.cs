@@ -1,7 +1,7 @@
 ﻿
 namespace Carpool.Concerns
 {
-    public class Ride
+    public class RideInfo
     {
         public long Id { get; set; }
 
@@ -17,8 +17,8 @@ namespace Carpool.Concerns
 
         public int TimeSlot { get; set; }
 
-        public long OwnerId { get; set; }
+        public string FirstName { get; set; }
 
-        public long PassengerId { get; set; }
+        public string LastName { get; set; }
     }
 }

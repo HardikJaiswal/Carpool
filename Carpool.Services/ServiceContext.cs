@@ -1,10 +1,5 @@
-﻿using Carpool.Models;
+﻿using Carpool.Concerns;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Carpool.Services
 {
@@ -14,7 +9,7 @@ namespace Carpool.Services
 
         public DbSet<Ride> RideBooked { get; set; }
 
-        public DbSet<Stops> Stops { get; set; }
+        public DbSet<Station> Stations { get; set; }
 
         public ServiceContext(DbContextOptions<ServiceContext> options) : base(options)
         {
@@ -24,7 +19,7 @@ namespace Carpool.Services
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Stops>().HasNoKey();
+            modelBuilder.Entity<Station>().HasNoKey();
         }
     }
 }

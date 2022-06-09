@@ -1,14 +1,14 @@
-using Carpool.IContracts;
+using Carpool.Contracts;
 using Carpool.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using RepoDb;
 
 namespace Carpool.Web
 {
@@ -23,20 +23,23 @@ namespace Carpool.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddControllersWithViews()
-            .AddNewtonsoftJson(options =>
-            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
-            .Json.ReferenceLoopHandling.Ignore)
-            .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
-            = new DefaultContractResolver());   
+            services.AddControllersWithViews().AddNewtonsoftJson(options => 
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            }).AddNewtonsoftJson(options => 
+            {
+                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            });   
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
+
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ServiceContext>(options => options.UseSqlServer(connection));
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IRideService, RideService>();
+            //services.AddDbContext<ServiceContext>(options => options.UseSqlServer(connection));
+            SqlServerBootstrap.Initialize();
+            services.AddSingleton<IUserService>(new UserService(new DbService(connection)));
+            services.AddSingleton<IRideService>(new RideService(new DbService(connection)));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

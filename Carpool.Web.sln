@@ -5,11 +5,11 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Web", "Carpool.Web\Carpool.Web.csproj", "{D536CD57-4C8D-4332-A4D5-BEE8D984EEF9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Models", "Carpool.Models\Carpool.Models.csproj", "{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.IContracts", "Carpool.IContracts\Carpool.IContracts.csproj", "{298F5D99-9CB5-41F4-8F64-856F59AA138F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Concerns", "Carpool.Models\Carpool.Concerns.csproj", "{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Services", "Carpool.Services\Carpool.Services.csproj", "{A25B2207-9944-41C7-B8FE-4EFC86B664B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.Contracts", "Carpool.IContracts\Carpool.Contracts.csproj", "{DC2CAC43-1FC3-41BD-86BB-5CD9274D786A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFDB8F4C-EE78-42A0-BCB5-6112BFC1B276}.Release|Any CPU.Build.0 = Release|Any CPU
-		{298F5D99-9CB5-41F4-8F64-856F59AA138F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{298F5D99-9CB5-41F4-8F64-856F59AA138F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{298F5D99-9CB5-41F4-8F64-856F59AA138F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{298F5D99-9CB5-41F4-8F64-856F59AA138F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A25B2207-9944-41C7-B8FE-4EFC86B664B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A25B2207-9944-41C7-B8FE-4EFC86B664B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A25B2207-9944-41C7-B8FE-4EFC86B664B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A25B2207-9944-41C7-B8FE-4EFC86B664B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC2CAC43-1FC3-41BD-86BB-5CD9274D786A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC2CAC43-1FC3-41BD-86BB-5CD9274D786A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC2CAC43-1FC3-41BD-86BB-5CD9274D786A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC2CAC43-1FC3-41BD-86BB-5CD9274D786A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -126,6 +126,18 @@
     display: inline-flex;
     justify-content: space-between;
 }
+.tile-header{
+    display: flex;
+    justify-content: space-between;
+}
+.tile-header > img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+.tile-header > b {
+    font-size: x-large;
+}
 .profile-menu{
   display: flex;
   flex-direction: column;
@@ -178,7 +190,8 @@
 .match {
     width: 310px;
     height: 169px;
-    padding: 20px;
+    padding: 10px 20px;
+    line-height: 23px;
 }
 .switch {
   position: relative;
