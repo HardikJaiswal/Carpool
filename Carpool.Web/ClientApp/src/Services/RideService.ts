@@ -27,7 +27,7 @@ export class RideService {
             Source: ride.startLocation,
             Destination: ride.endLocation,
             AvailableSeats: ride.seats,
-            SeatPrice: ride.price
+            Price: ride.price
         };
         let data = {
             RideObject: rideDetails,

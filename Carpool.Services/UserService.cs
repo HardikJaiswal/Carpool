@@ -8,12 +8,12 @@ namespace Carpool.Services
 {
     public class UserService : IUserService
     {
-        private readonly DbService service;
+        private readonly DbService dbservice;
         private readonly string tableName = "[dbo].[Person]";
 
-        public UserService(DbService dbService)
+        public UserService(DbService DbService)
         {
-            service = dbService;
+            dbservice = DbService;
         }
 
         public APIResponse AddUser(string email, string password)
@@ -28,7 +28,7 @@ namespace Carpool.Services
                     Email = email,
                     Passkey = password,
                 };
-                response.Data = service.Add(tableName, user);
+                response.Data = dbservice.Add(tableName, user);
                 response.IsSuccess = true;
             }
             catch (Exception e)
@@ -48,7 +48,7 @@ namespace Carpool.Services
             APIResponse response = new();
             try
             {
-                response.Data = service.Get<User>(tableName,where);
+                response.Data = dbservice.Get<User>(tableName,where);
                 response.IsSuccess = true;
             }catch(Exception e)
             {
@@ -58,21 +58,6 @@ namespace Carpool.Services
             return response;
         }
 
-        public APIResponse GetRides(int id, bool isBookedRides)
-        {
-            APIResponse response = new();
-            try
-            {
-                response.Data = service.GetRideInfo(null,id,isBookedRides);
-                response.IsSuccess = true;
-            }
-            catch (Exception e)
-            {
-                response.IsSuccess = false;
-                response.Message = e.Message;
-            }
-            return response;
-        }
 
         public APIResponse Login(string email, string password)
         {
@@ -84,7 +69,7 @@ namespace Carpool.Services
             APIResponse response = new();
             try
             {
-                response.Data = service.Get<User>(tableName,where).Id;
+                response.Data = dbservice.Get<User>(tableName,where).Id;
                 response.IsSuccess = true;
             }
             catch (Exception e)
@@ -97,17 +82,18 @@ namespace Carpool.Services
 
         public APIResponse UpdateName(int id, string firstName, string lastName)
         {
-            var where = new[]
-            {
-                new QueryField("Id", Operation.Equal, id)
-            };
             APIResponse response = new();
+            var queryParam = new
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Id = id
+            };
+            string updateNameQuery = $"UPDATE {tableName} SET FirstName=@FirstName, LastName=@lastName" +
+            "WHERE Id=@Id";
             try
             {
-                User user = service.Get<User>(tableName,where);
-                user.FirstName = firstName;
-                user.LastName = lastName;
-                service.Update(tableName, user);
+                dbservice.Update(updateNameQuery, queryParam);
                 response.IsSuccess = true;
             }
             catch (Exception e)

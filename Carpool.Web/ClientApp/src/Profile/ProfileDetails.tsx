@@ -11,20 +11,20 @@ export default class ProfileDetails extends React.Component {
     constructor(props) {
         super(props);
         this.findMatches();
+        this.state = {
+            userLoginInfo: {
+                Email: "",
+                Passkey: ""
+            },
+            FirstName: getName()[0],
+            LastName: getName()[1],
+            id: getId(),
+            redirect: false
+        }
     }
-    service = new UserService();
-    state = {
-        userLoginInfo: {
-            Email: "",
-            Passkey: ""
-        },
-        FirstName: getName()[0],
-        LastName: getName()[1],
-        id: getId(),
-        redirect: false
-    }
+    userservice = new UserService();
     findMatches() {
-        this.service.getUserProfile(this.state.id)
+        this.userservice.getUserProfile(this.state.id)
             .then((res) => {
                 res = res.data;
                 this.setState(() => {
@@ -32,20 +32,21 @@ export default class ProfileDetails extends React.Component {
                 });
             });
     }
-    updateFName(event) {
+    updateFirstName(event) {
         this.setState({ FirstName : event.target.value });
     }
-    updateLName(event) {
+    updateLastName(event) {
         this.setState({ LastName: event.target.value });
     }
     enableRedirect() {
         this.setState({ redirect: true });
     }
-    onButtonClick(event) {
+    saveChanges(event) {
         event.preventDefault();
-        this.service.updateName(this.state.FirstName, this.state.LastName, this.state.id)
+        this.userservice.updateName(this.state.FirstName, this.state.LastName, this.state.id)
             .then((res) => {
-                if (res.status == 200) {
+                res = res.data;
+                if (res.IsSuccess == true) {
                     alert("Changes Made");
                     setName(this.state.FirstName, this.state.LastName);
                 }
@@ -71,7 +72,7 @@ export default class ProfileDetails extends React.Component {
                             <b>{this.state.userLoginInfo.Email}</b></div><br />
                         <div className="detail-item"><label>Password</label>&emsp;
                             <b>{this.state.userLoginInfo.Passkey}</b></div><br />
-                        <button onClick={(e) => this.onButtonClick(e)}> Save </button>
+                        <button onClick={(e) => this.saveChanges(e)}> Save </button>
                     </div>
                 </div>
             </div>

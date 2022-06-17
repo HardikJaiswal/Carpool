@@ -8,47 +8,50 @@ import { getId, getName } from "../Local Service/AuthService.ts";
 import { Navigate } from "react-router-dom";
 
 export default class BookRide extends React.Component {
-    service = new RideService();
-    auth = getId();
-    formParameters = {
+    rideservice = new RideService();
+    authId = getId();
+    formInputs = {
         startLocation: '',
         endLocation: '',
         bookingDate: '',
         timeSlot: 0
     };
-    state = {
-        showMatch: false,
-        redirect: false,
-        matches: [],
-        user: {
-            firstName: getName()[0],
-            lastName: getName()[1]
-        }
-    }
 
     constructor(props) {
         super(props);
+        this.state = {
+            showMatchedRides: false,
+            redirect: false,
+            matchedRides: [],
+            userName: {
+                firstName: getName()[0],
+                lastName: getName()[1]
+            }
+        }
     }
 
     setValue = (field, value) => {
-        this.formParameters[field] = value;
+        this.formInputs[field] = value;
     }
     findRides = (e) => {
         e.preventDefault();
-        this.service.findMatchingRides(this.formParameters)
+        this.rideservice.findMatchingRides(this.formInputs)
             .then((response) => {
-                this.setState({ matches: Array.from(response.data) });
+                response = response.data;
+                if (response.IsSuccess == true) {
+                    this.setState({ matchedRides: Array.from(response.Data) });
+                }
             });
-        this.setState({showMatch: true});
+        this.setState({showMatchedRides: true});
     }
 
     bookSelectedRide = (pos) => {
-        this.service.bookRide(this.state.matches[pos].Id, this.auth)
+        this.rideservice.bookRide(this.state.matchedRides[pos].Id, this.authId)
             .then((res) => {
-                console.log(res.status);
-                if (res.status == 200) alert('Ride Booked Successfully');
-                else alert("Some error occured");
-                this.enableRedirect();
+                if (res.data.IsSuccess == true) {
+                    alert('Ride Booked Successfully');
+                    this.enableRedirect();
+                } else alert("Some error occured");
             });
     }
     enableRedirect() {
@@ -62,8 +65,8 @@ export default class BookRide extends React.Component {
                 <>
                 <div className="dashboard-header">
                         <img src={require('../Assets/logo.png')} style={{ margin: '2% 0% 0% 5%', height: '60px' }}
-                            onClick={() => this.enableRedirect()} /><br />
-                    <Profile userName={this.state.user.firstName + ' ' + this.state.user.lastName} />
+                            onClick={this.enableRedirect.bind(this)} /><br />
+                    <Profile userName={this.state.userName.firstName + ' ' + this.state.userName.lastName} />
                 </div>
                 <div className="ride-form">
                     <div className="form container">
@@ -73,10 +76,10 @@ export default class BookRide extends React.Component {
                         </form>
                     </div>
                     {
-                        this.state.showMatch ?
+                        this.state.showMatchedRides ?
                             <div className="ride-matches">
                                 <h2 style={{ color: 'purple',height: '30px',gridColumnEnd: 'span 2' }}>Your Matches</h2>
-                                {this.state.matches.map((item, pos) => {
+                                {this.state.matchedRides.map((item, pos) => {
                                     return (
                                         <RideTile key={pos} info={item} isHistory={false} onclick={() => this.bookSelectedRide(pos)} />
                                     );

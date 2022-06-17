@@ -12,7 +12,7 @@ namespace Carpool.Concerns
 
         public int AvailableSeats { get; set; }
 
-        public float SeatPrice { get; set; }
+        public float Price { get; set; }
 
         public DateTime BookingDate { get; set; }
 

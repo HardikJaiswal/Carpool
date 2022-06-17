@@ -10,33 +10,41 @@ class History extends React.Component {
     constructor(props) {
         super(props);
         this.fetchData();
+        this.state = {
+            offeredRides: [],
+            bookedRides: [],
+            userName: {
+                firstName: getName()[0],
+                lastName: getName()[1]
+            },
+            loading: true,
+            redirect: false
+        }
     }
     id = getId();
-    service = new UserService();
-    state = {
-        offeredRides: [],
-        bookedRides: [],
-        user: {
-            firstName: getName()[0],
-            lastName: getName()[1]
-        },
-        loading: true,
-        redirect: false
-    }
+    userservice = new UserService();
     enableRedirect() {
         this.setState({ redirect: true });
     }
 
     fetchData() {
-        this.service.getBookedRide(this.id)
+        this.userservice.getBookedRide(this.id)
             .then((res) => {
-                console.log(res.data);
-                this.setState({ bookedRides: Array.from(res.data), loading: false });
+                res = res.data;
+                if (res.IsSuccess) {
+                    this.setState({ bookedRides: Array.from(res.Data), loading: false });
+                } else {
+                    alert("An error Occured");
+                }
             })
-        this.service.getOfferedRide(this.id)
+        this.userservice.getOfferedRide(this.id)
             .then((res) => {
-                console.log(res.data);
-                this.setState({ offeredRides: Array.from(res.data), loading: false });
+                res = res.data;
+                if (res.IsSuccess) {
+                    this.setState({ offeredRides: Array.from(res.Data), loading: false });
+                } else {
+                    alert("An error Occured");
+                }
             })
     }
 
@@ -49,7 +57,7 @@ class History extends React.Component {
                     <div className="dashboard-header">
                         <img src={require('../Assets/logo.png')} style={{ margin: '2% 0% 0% 5%', height: '60px' }}
                             onClick={() => this.enableRedirect()} /><br />
-                        <Profile userName={this.state.user.firstName + ' ' + this.state.user.lastName} />
+                        <Profile userName={this.state.userName.firstName + ' ' + this.state.userName.lastName} />
                     </div>
                     {this.state.loading ? <h3>Loading</h3> :
                         <div className="history-container">

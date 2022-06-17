@@ -20,11 +20,11 @@ export class UserService {
     }
 
     getBookedRide(id: number) {
-        return this.httpService.getData(`/api/userservice/getBookedRides?id=${id}`);
+        return this.httpService.getData(`/api/rideservice/getbookedridesofuser?id=${id}`);
     }
 
     getOfferedRide(id: number) {
-        return this.httpService.getData(`/api/userservice/getOfferedRides?id=${id}`);
+        return this.httpService.getData(`/api/rideservice/getofferedridesofuser?id=${id}`);
     }
 
     updateName(fName: string, lName: string, id: number) {

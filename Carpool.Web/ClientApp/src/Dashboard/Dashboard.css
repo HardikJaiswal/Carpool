@@ -261,7 +261,7 @@ input:checked + .slider:before {
     display: grid;
     grid-template-columns: 1fr;
     grid-row-gap: 10px;
-    align-items:;
+    align-items: baseline;
     align-content: baseline;
 }
 .ride-cost > span{

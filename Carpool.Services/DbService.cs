@@ -35,55 +35,21 @@ namespace Carpool.Services
             return result;
         }
 
-        public IEnumerable<RideInfo> GetRideInfo(AvailableRideRequest request = null, long id = 0, 
-            bool isOfferedRides = false)
+        public IEnumerable<T> ExecuteQuery<T>(string query,object queryParam)
         {
-            object param;
-            string queryString = "SELECT r.Source, " +
-                            "r.Destination, " +
-                            "r.Id, " +
-                            "r.SeatPrice, " +
-                            "r.AvailableSeats, " +
-                            "r.BookingDate, " +
-                            "CONCAT(p.FirstName,' ',p.LastName) as OfferedBy " +
-                        "FROM dbo.RideBooked r inner join dbo.Person p on r.OwnerId = p.Id ";
-            if (request != null)
+            IEnumerable<T> result;
+            using(var connection = new SqlConnection(connectionString))
             {
-                queryString += "WHERE r.Source = @StartLocation AND r.Destination= @EndLocation " +
-                        "AND r.BookingDate = @BookingDate AND r.PassengerId = 0 ";
-                param = new
-                {
-                    StartLocation = request.Source,
-                    EndLocation = request.Destination,
-                    BookingDate = request.Date
-                };
+                result = connection.ExecuteQuery<T>(query, queryParam);
             }
-            else
-            {
-                if (isOfferedRides)
-                {
-                    queryString += "WHERE r.OwnerId = @Id";
-                }
-                else
-                {
-                    queryString += "WHERE r.PassengerId = @Id";
-                }
-                param = new
-                {
-                    Id = id
-                };
-            }
-            using (var connection = new SqlConnection(connectionString))
-            {
-                return connection.ExecuteQuery<RideInfo>(queryString,param);
-            }
+            return result;
         }
 
-        public void Update<T>(string tableName, T entity) where T : class
+        public void Update(string query, object queryParam)
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                connection.Update(tableName, entity);
+                connection.ExecuteNonQuery(query, queryParam);
             }
         }
     }

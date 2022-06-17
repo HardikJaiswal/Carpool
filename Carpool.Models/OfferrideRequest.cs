@@ -3,7 +3,7 @@ namespace Carpool.Concerns
 {
     public class OfferrideRequest
     {
-        public Ride RideObject { get; set; }
+        public Ride Ride { get; set; }
 
         public int TimeSlot { get; set; }
 

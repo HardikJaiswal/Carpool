@@ -10,8 +10,6 @@ namespace Carpool.Contracts
 
         APIResponse Login(string email, string password);
 
-        APIResponse GetRides(int id, bool isBooked);
-
         APIResponse UpdateName(int id, string firstName, string lastName);
     }
 }

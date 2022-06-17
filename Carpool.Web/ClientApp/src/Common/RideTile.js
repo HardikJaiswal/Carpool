@@ -40,7 +40,7 @@ function RideTile(props) {
             React.createElement("div", null,
                 React.createElement("label", null, "Price"),
                 React.createElement("br", null),
-                item.SeatPrice,
+                item.Price,
                 "$"),
             React.createElement("div", null,
                 React.createElement("label", null, props.isHistory ? 'Seats' : 'Seat Availability'),

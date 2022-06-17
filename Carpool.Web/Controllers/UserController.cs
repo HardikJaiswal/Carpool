@@ -1,7 +1,6 @@
 ﻿using Carpool.Contracts;
 using Carpool.Concerns;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace Carpool.Web.Controllers
 {
@@ -18,44 +17,30 @@ namespace Carpool.Web.Controllers
         }
 
         [HttpGet("getprofile")]
-        public User GetProfile(int id)
+        public APIResponse GetProfile(int id)
         {
             var res = UserService.GetProfile(id);
-            return res.IsSuccess ? res.Data : null;
+            return res;
         }
 
         [HttpPost("create")]
-        public int AddUser(string email, string password)
+        public APIResponse AddUser(string email, string password)
         {
             var res = UserService.AddUser(email, password);
-            return res.IsSuccess ? res.Data : 0;
+            return res;
         }
 
         [HttpGet("getuser")]
-        public int GetUserIdIfPresent(string email, string password)
+        public APIResponse GetUserIdIfPresent(string email, string password)
         {
             var res = UserService.Login(email, password);
-            return res.IsSuccess ? res.Data : 0;
+            return res;
         }
 
-        [HttpGet("getBookedRides")]
-        public IEnumerable<RideInfo> GetBookedRides(int id)
+        [HttpPatch("updatenames")]
+        public APIResponse UpdateName(int id, string firstName, string lastName)
         {
-            var res = UserService.GetRides(id, true);
-            return res.IsSuccess ? res.Data : null;
-        }
-
-        [HttpGet("getOfferedRides")]
-        public IEnumerable<RideInfo> GetOfferedRides(int id)
-        {
-            var res = UserService.GetRides(id, false);
-            return res.IsSuccess ? res.Data : null;
-        }
-
-        [HttpPatch("updateNames")]
-        public IActionResult UpdateName(int id, string firstName, string lastName)
-        {
-            return UserService.UpdateName(id, firstName, lastName).IsSuccess ? Ok() : BadRequest();
+            return UserService.UpdateName(id, firstName, lastName);
         }
     }
 }

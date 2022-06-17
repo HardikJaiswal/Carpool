@@ -9,5 +9,7 @@ namespace Carpool.Contracts
         APIResponse BookRide(int rideId, int bookerId);
 
         APIResponse OfferRide(Ride ride);
+
+        APIResponse GetRideHistory(int userId, bool isBooked);
     }
 }

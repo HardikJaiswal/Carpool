@@ -8,17 +8,7 @@ import { Navigate } from "react-router-dom";
 
 class OfferRide extends React.Component{
     service = new RideService();
-    state = {
-        seatCount: 0,
-        totalStops: 1,
-        displaySecondForm: false,
-        redirect: false,
-        user: {
-            firstName: getName()[0],
-            lastName: getName()[1]
-        }
-    }
-    FormParameters = {
+    FormInputParameters = {
         startLocation: '',
         endLocation: '',
         bookingDate: '',
@@ -30,6 +20,16 @@ class OfferRide extends React.Component{
     };
     constructor(props) {
         super(props);
+        this.state = {
+            seatCount: 0,
+            totalStops: 1,
+            displaySecondForm: false,
+            redirect: false,
+            userName: {
+                firstName: getName()[0],
+                lastName: getName()[1]
+            }
+        }
     }
     
     addNewStop = () => {
@@ -41,19 +41,23 @@ class OfferRide extends React.Component{
     }
     stopsDiv = React.createRef<HTMLDivElement>();
     
-    onFormSubmit = (event) => {
+    onFormSubmission = (event) => {
         event.preventDefault();
         const div = this.stopsDiv.current;
         for (let i = 0; i < div.children.length; i++) {
             if (div.children[i].tagName === "Input") {
-                this.FormParameters.stops.push(div.children[i].value);
+                this.FormInputParameters.stops.push(div.children[i].value);
             }
         }
-        this.service.offerRide(this.FormParameters)
+        this.service.offerRide(this.FormInputParameters)
             .then((res) => {
-                console.log(res.status);
+                res = res.data;
+                if (res.IsSuccess == true) {
+                    alert('Ride Offered Successfully');
+                } else {
+                    alert("An error occured");
+                }
             });
-        alert('Ride Offered Successfully');
     }
     enableRedirect() {
         this.setState({ redirect: true });
@@ -63,11 +67,11 @@ class OfferRide extends React.Component{
         this.setState({displaySecondForm: true});
     }
     setFormValues = (field, value) => {
-        this.FormParameters[field] = value;
+        this.FormInputParameters[field] = value;
     }
     setSeatCount = (event, pos) => {
         event.preventDefault();
-        this.FormParameters.seats = pos + 1;
+        this.FormInputParameters.seats = pos + 1;
         this.setState({seatCount: pos});
     }
     render(){
@@ -78,9 +82,9 @@ class OfferRide extends React.Component{
                 <div className="dashboard-header">
                         <img src={require('../Assets/logo.png')} style={{ margin: '2% 0% 0% 5%', height: '60px' }}
                             onClick={() => this.enableRedirect() }/><br />
-                    <Profile userName={this.state.user.firstName + ' ' + this.state.user.lastName} />
+                    <Profile userName={this.state.userName.firstName + ' ' + this.state.userName.lastName} />
                 </div>
-                <form onSubmit={this.onFormSubmit.bind(this)}>
+                <form onSubmit={this.onFormSubmission.bind(this)}>
                     <div className="ride-form">
                         <div className="container form">
                             <FormHeader isBooking={false} /><br /><br />
@@ -108,9 +112,7 @@ class OfferRide extends React.Component{
                                                 return null;
                                             })}
                                         </div>
-                                        <svg className="add-stop" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" onClick={this.addNewStop}>
-                                            <path d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z" />
-                                        </svg>
+                                        <i className="fa-solid fa-plus" onClick={this.addNewStop}></i>
                                         <div className="split-in-two">
                                             <div>
                                                 <label>Availbale Seats</label><br />

@@ -35,7 +35,7 @@ function RideTile(props) {
                 </div>
                 <div>
                     <label>Price</label><br />
-                    {item.SeatPrice}&#36;
+                    {item.Price}&#36;
                 </div>
                 <div>
                     <label>{props.isHistory ? 'Seats' : 'Seat Availability'}</label><br />

@@ -10,15 +10,16 @@ export default class SignIn extends React.Component {
         super(props);
         setId(0);
         setName("", "");
+        this.state = {
+            isSignUp: false
+        };
+        this.setIsSignUp = this.setIsSignUp.bind(this);
     }
-    state = {
-        isSignUp: false
-    };
     setIsSignUp(value: boolean) {
         this.setState({ isSignUp: value });
     }
 
-    render(): React.ReactNode {
+    render(){
         return (
             <div className="auth-page">
                 <Poster />
