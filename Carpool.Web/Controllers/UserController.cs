@@ -18,42 +18,42 @@ namespace Carpool.Web.Controllers
         }
 
         [HttpGet("getprofile")]
-        public User GetProfile(long id)
+        public User GetProfile(int id)
         {
             var res = UserService.GetProfile(id);
             return res.IsSuccess ? res.Data : null;
         }
 
         [HttpPost("create")]
-        public long AddUser(string email, string password)
+        public int AddUser(string email, string password)
         {
             var res = UserService.AddUser(email, password);
             return res.IsSuccess ? res.Data : 0;
         }
 
         [HttpGet("getuser")]
-        public long GetUserIdIfPresent(string email, string password)
+        public int GetUserIdIfPresent(string email, string password)
         {
-            var res = UserService.GetUserIdIfPresent(email, password);
+            var res = UserService.Login(email, password);
             return res.IsSuccess ? res.Data : 0;
         }
 
         [HttpGet("getBookedRides")]
-        public IEnumerable<RideInfo> GetBookedRides(long id)
+        public IEnumerable<RideInfo> GetBookedRides(int id)
         {
             var res = UserService.GetRides(id, true);
             return res.IsSuccess ? res.Data : null;
         }
 
         [HttpGet("getOfferedRides")]
-        public IEnumerable<RideInfo> GetOfferedRides(long id)
+        public IEnumerable<RideInfo> GetOfferedRides(int id)
         {
             var res = UserService.GetRides(id, false);
             return res.IsSuccess ? res.Data : null;
         }
 
         [HttpPatch("updateNames")]
-        public IActionResult UpdateName(long id, string firstName, string lastName)
+        public IActionResult UpdateName(int id, string firstName, string lastName)
         {
             return UserService.UpdateName(id, firstName, lastName).IsSuccess ? Ok() : BadRequest();
         }

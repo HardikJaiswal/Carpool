@@ -48,16 +48,21 @@ export default class BookRide extends React.Component {
                 console.log(res.status);
                 if (res.status == 200) alert('Ride Booked Successfully');
                 else alert("Some error occured");
-                this.setState({ redirect: true });
+                this.enableRedirect();
             });
     }
+    enableRedirect() {
+        this.setState({ redirect: true });
+    }
+
     render(){
         return (
             this.state.redirect ?
                 <Navigate to="/" replace={true} /> :
                 <>
                 <div className="dashboard-header">
-                    <img src={require('../Assets/logo.png')} style={{ margin: '2% 0% 0% 5%', height: '60px' }} /><br />
+                        <img src={require('../Assets/logo.png')} style={{ margin: '2% 0% 0% 5%', height: '60px' }}
+                            onClick={() => this.enableRedirect()} /><br />
                     <Profile userName={this.state.user.firstName + ' ' + this.state.user.lastName} />
                 </div>
                 <div className="ride-form">

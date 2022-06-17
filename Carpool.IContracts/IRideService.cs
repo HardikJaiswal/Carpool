@@ -6,7 +6,7 @@ namespace Carpool.Contracts
     {
         APIResponse GetAvailableRides(AvailableRideRequest request);
 
-        APIResponse BookRide(long rideId, long bookerId);
+        APIResponse BookRide(int rideId, int bookerId);
 
         APIResponse OfferRide(Ride ride);
     }

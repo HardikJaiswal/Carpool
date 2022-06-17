@@ -1,7 +1,6 @@
 ﻿using Carpool.Concerns;
 using Microsoft.Data.SqlClient;
 using RepoDb;
-using RepoDb.Enumerations;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,26 +15,22 @@ namespace Carpool.Services
             this.connectionString = connectionString;
         }
 
-        public long Add(string tableName, object entity)
+        public int Add<T>(string tableName, T entity)
         {
-            long result = 0;
+            int result = 0;
             using (var connection = new SqlConnection(connectionString))
             {
-                result = (long)connection.Insert(tableName,entity);
+                result = (int)connection.Insert(tableName,entity);
             }
             return result;
         }
 
-        public User GetUserInfo(long id, string tableName)
+        public T Get<T>(string tableName, QueryField[] where) where T : class
         {
-            dynamic result;
-            var where = new[]
-            {
-                new QueryField("Id", Operation.Equal, id)
-            };
+            T result;
             using(var connection = new SqlConnection(connectionString))
             {
-                result = connection.Query<User>(tableName,where).FirstOrDefault();
+                result = connection.Query<T>(tableName,where).FirstOrDefault();
             }
             return result;
         }
@@ -44,26 +39,23 @@ namespace Carpool.Services
             bool isOfferedRides = false)
         {
             object param;
-            string queryString = "SELECT r.StartLocation, " +
-                            "r.EndLocation, " +
+            string queryString = "SELECT r.Source, " +
+                            "r.Destination, " +
                             "r.Id, " +
-                            "r.Price, " +
-                            "r.Seats, " +
+                            "r.SeatPrice, " +
+                            "r.AvailableSeats, " +
                             "r.BookingDate, " +
-                            "r.TimeSlot, " +
-                            "p.FirstName, " +
-                            "p.LastName " +
+                            "CONCAT(p.FirstName,' ',p.LastName) as OfferedBy " +
                         "FROM dbo.RideBooked r inner join dbo.Person p on r.OwnerId = p.Id ";
             if (request != null)
             {
-                queryString += "WHERE r.StartLocation = @StartLocation AND r.EndLocation = @EndLocation " +
-                        "AND r.TimeSlot = @TimeSlot AND r.BookingDate = @BookingDate AND r.PassengerId = 0 ";
+                queryString += "WHERE r.Source = @StartLocation AND r.Destination= @EndLocation " +
+                        "AND r.BookingDate = @BookingDate AND r.PassengerId = 0 ";
                 param = new
                 {
-                    StartLocation = request.StartLoaction,
-                    EndLocation = request.EndLoaction,
-                    BookingDate = request.BookingDate,
-                    TimeSlot = request.TimeSlot
+                    StartLocation = request.Source,
+                    EndLocation = request.Destination,
+                    BookingDate = request.Date
                 };
             }
             else
@@ -87,30 +79,11 @@ namespace Carpool.Services
             }
         }
 
-        public long GetUserId(string email, string password, string tableName)
+        public void Update<T>(string tableName, T entity) where T : class
         {
-            dynamic user;
-            var where = new []
-            {
-                new QueryField("Email", Operation.Equal, email),
-                new QueryField("Passkey", Operation.Equal, password)
-            };
             using (var connection = new SqlConnection(connectionString))
             {
-                user = connection.Query<User>(tableName,where).FirstOrDefault();
-            }
-            return user != null ? user.Id : 0;
-        }
-
-        public void Update(long id, string tableName, object entity)
-        {
-            var where = new[]
-            {
-                new QueryField("Id", Operation.Equal, id)
-            };
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Update(tableName, entity, where);
+                connection.Update(tableName, entity);
             }
         }
     }

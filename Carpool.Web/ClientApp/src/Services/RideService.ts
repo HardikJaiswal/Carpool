@@ -24,14 +24,17 @@ export class RideService {
     offerRide(ride: object) {
         let rideDetails = {
             OwnerId: ride.userId,
-            StartLocation: ride.startLocation,
-            EndLocation: ride.endLocation,
-            BookingDate: ride.bookingDate,
-            TimeSlot: ride.timeSlot,
-            Seats: ride.seats,
-            Price: ride.price
+            Source: ride.startLocation,
+            Destination: ride.endLocation,
+            AvailableSeats: ride.seats,
+            SeatPrice: ride.price
         };
-        return this.httpService.postData(`/api/rideservice/offerride`,rideDetails);
+        let data = {
+            RideObject: rideDetails,
+            TimeSlot: ride.timeSlot,
+            Date: ride.bookingDate
+        };
+        return this.httpService.postData(`/api/rideservice/offerride`,data);
     }
 
 }

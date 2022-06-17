@@ -54,6 +54,8 @@ class OfferRide extends React.Component{
                 console.log(res.status);
             });
         alert('Ride Offered Successfully');
+    }
+    enableRedirect() {
         this.setState({ redirect: true });
     }
     onNextBtnClick = (event) => {
@@ -68,59 +70,14 @@ class OfferRide extends React.Component{
         this.FormParameters.seats = pos + 1;
         this.setState({seatCount: pos});
     }
-    secondForm = (
-        <div>
-            <div className='container ride-form-2'>
-                <FormHeader isBooking={false} /><br /><br />
-                <div ref={this.stopsDiv}>
-                    <div className="inputs">
-                        <label>Stop 1</label><br />
-                        <input type="text" placeholder="First Stop" required />
-                    </div>
-                    {Array.from(Array(this.state.totalStops), (_, index) => index + 1).map((item) => {
-                        if (item < this.state.totalStops && item < 4) {
-                            return (
-                                <div className="inputs">
-                                    <label>Stop {item + 1}</label><br />
-                                    <input type="text" placeholder="Next Stop" required />
-                                </div>
-                            );
-                        }
-                        return null;
-                    })}
-                </div>
-                <svg className="add-stop" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" onClick={this.addNewStop}>
-                    <path d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z" />
-                </svg>
-                <div className="split-in-two">
-                    <div>
-                        <label>Availbale Seats</label><br />
-                        {Array.from(Array(4), (_, index) => index + 1).map((item, pos) => {
-                            let classArr = ['seats'];
-                            if (pos === this.state.seatCount) classArr.push('seat-selected');
-                            return (
-                                <button className={classArr.join(' ')} key={pos} onClick={(e) => this.setSeatCount(e,pos)}>
-                                    {item}
-                                </button>);
-                        })}
-                    </div>
-                    <div className="ride-cost">
-                        <label>Price</label><br />
-                        {/*<input type="number"/> */}
-                        <span>180&#36;</span>
-                    </div>
-                </div><br /><br />
-                <input type="submit" value="Submit" className="bg-orange" />
-            </div>
-        </div>
-    );
     render(){
         return (
             this.state.redirect ? 
                 <Navigate to="/" replace={true} /> :
             <>
                 <div className="dashboard-header">
-                    <img src={require('../Assets/logo.png')} style={{ margin: '2% 0% 0% 5%', height: '60px' }} /><br />
+                        <img src={require('../Assets/logo.png')} style={{ margin: '2% 0% 0% 5%', height: '60px' }}
+                            onClick={() => this.enableRedirect() }/><br />
                     <Profile userName={this.state.user.firstName + ' ' + this.state.user.lastName} />
                 </div>
                 <form onSubmit={this.onFormSubmit.bind(this)}>
@@ -130,7 +87,52 @@ class OfferRide extends React.Component{
                             <RideMatchFirstForm isBooking={false} fillDetails={(field, value) => this.setFormValues(field, value)}
                                 viewNextForm={(e) => this.onNextBtnClick(e)} />
                         </div>
-                        {this.state.displaySecondForm ? this.secondForm : null}
+                            {this.state.displaySecondForm ?
+                                <div>
+                                    <div className='container ride-form-2'>
+                                        <FormHeader isBooking={false} /><br /><br />
+                                        <div ref={this.stopsDiv}>
+                                            <div className="inputs">
+                                                <label>Stop 1</label><br />
+                                                <input type="text" placeholder="First Stop" required />
+                                            </div>
+                                            {Array.from(Array(this.state.totalStops), (_, index) => index + 1).map((item) => {
+                                                if (item < this.state.totalStops && item < 4) {
+                                                    return (
+                                                        <div className="inputs">
+                                                            <label>Stop {item + 1}</label><br />
+                                                            <input type="text" placeholder="Next Stop" required />
+                                                        </div>
+                                                    );
+                                                }
+                                                return null;
+                                            })}
+                                        </div>
+                                        <svg className="add-stop" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" onClick={this.addNewStop}>
+                                            <path d="M432 256c0 17.69-14.33 32.01-32 32.01H256v144c0 17.69-14.33 31.99-32 31.99s-32-14.3-32-31.99v-144H48c-17.67 0-32-14.32-32-32.01s14.33-31.99 32-31.99H192v-144c0-17.69 14.33-32.01 32-32.01s32 14.32 32 32.01v144h144C417.7 224 432 238.3 432 256z" />
+                                        </svg>
+                                        <div className="split-in-two">
+                                            <div>
+                                                <label>Availbale Seats</label><br />
+                                                {Array.from(Array(4), (_, index) => index + 1).map((item, pos) => {
+                                                    let classArr = ['seats'];
+                                                    if (pos === this.state.seatCount) classArr.push('seat-selected');
+                                                    return (
+                                                        <button className={classArr.join(' ')} key={pos} onClick={(e) => this.setSeatCount(e, pos)}>
+                                                            {item}
+                                                        </button>);
+                                                })}
+                                            </div>
+                                            <div className="ride-cost">
+                                                <label>Price</label><br />
+                                                {/*<input type="number"/> */}
+                                                <span>180&#36;</span>
+                                            </div>
+                                        </div><br /><br />
+                                        <input type="submit" value="Submit" className="bg-orange" />
+                                    </div>
+                                </div>
+                                : null}
                     </div>
                 </form>
             </>

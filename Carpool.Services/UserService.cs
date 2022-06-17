@@ -1,6 +1,8 @@
 ﻿using Carpool.Contracts;
 using Carpool.Concerns;
 using System;
+using RepoDb;
+using RepoDb.Enumerations;
 
 namespace Carpool.Services
 {
@@ -16,7 +18,7 @@ namespace Carpool.Services
 
         public APIResponse AddUser(string email, string password)
         {
-            APIResponse response = new APIResponse();
+            APIResponse response = new();
             try
             {
                 var user = new User()
@@ -37,12 +39,16 @@ namespace Carpool.Services
             return response;
         }
 
-        public APIResponse GetProfile(long id)
+        public APIResponse GetProfile(int id)
         {
-            APIResponse response = new APIResponse();
+            var where = new[]
+            {
+                new QueryField("Id", Operation.Equal, id)
+            };
+            APIResponse response = new();
             try
             {
-                response.Data = service.GetUserInfo(id, tableName);
+                response.Data = service.Get<User>(tableName,where);
                 response.IsSuccess = true;
             }catch(Exception e)
             {
@@ -52,9 +58,9 @@ namespace Carpool.Services
             return response;
         }
 
-        public APIResponse GetRides(long id, bool isBookedRides)
+        public APIResponse GetRides(int id, bool isBookedRides)
         {
-            APIResponse response = new APIResponse();
+            APIResponse response = new();
             try
             {
                 response.Data = service.GetRideInfo(null,id,isBookedRides);
@@ -68,12 +74,17 @@ namespace Carpool.Services
             return response;
         }
 
-        public APIResponse GetUserIdIfPresent(string email, string password)
+        public APIResponse Login(string email, string password)
         {
+            var where = new[]
+            {
+                new QueryField("Email", Operation.Equal, email),
+                new QueryField("Passkey", Operation.Equal, password)
+            };
             APIResponse response = new();
             try
             {
-                response.Data = service.GetUserId(email, password, tableName);
+                response.Data = service.Get<User>(tableName,where).Id;
                 response.IsSuccess = true;
             }
             catch (Exception e)
@@ -84,18 +95,19 @@ namespace Carpool.Services
             return response;
         }
 
-        public APIResponse UpdateName(long id, string firstName, string lastName)
+        public APIResponse UpdateName(int id, string firstName, string lastName)
         {
+            var where = new[]
+            {
+                new QueryField("Id", Operation.Equal, id)
+            };
             APIResponse response = new();
             try
             {
-                User user = new()
-                {
-                    Id = id,
-                    FirstName = firstName,
-                    LastName = lastName
-                };
-                service.Update(id, tableName, user);
+                User user = service.Get<User>(tableName,where);
+                user.FirstName = firstName;
+                user.LastName = lastName;
+                service.Update(tableName, user);
                 response.IsSuccess = true;
             }
             catch (Exception e)

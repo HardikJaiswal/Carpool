@@ -4,14 +4,14 @@ namespace Carpool.Contracts
 {
     public interface IUserService
     {
-        APIResponse GetProfile(long id);
+        APIResponse GetProfile(int id);
 
         APIResponse AddUser(string email, string password);
 
-        APIResponse GetUserIdIfPresent(string email, string password);
+        APIResponse Login(string email, string password);
 
-        APIResponse GetRides(long id, bool isBooked);
+        APIResponse GetRides(int id, bool isBooked);
 
-        APIResponse UpdateName(long id, string firstName, string lastName);
+        APIResponse UpdateName(int id, string firstName, string lastName);
     }
 }

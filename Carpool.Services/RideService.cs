@@ -1,6 +1,8 @@
 ﻿using Carpool.Contracts;
 using Carpool.Concerns;
 using System;
+using RepoDb;
+using RepoDb.Enumerations;
 
 namespace Carpool.Services
 {
@@ -14,17 +16,18 @@ namespace Carpool.Services
             service = DbService;
         }
 
-        public APIResponse BookRide(long rideId, long bookerId)
+        public APIResponse BookRide(int rideId, int bookerId)
         {
+            var where = new[]
+            {
+                new QueryField("Id", Operation.Equal, rideId)
+            };
             APIResponse response = new();
             try
             {
-                Ride ride = new()
-                {
-                    PassengerId = bookerId,
-                    Id = rideId
-                };
-                service.Update(rideId, tableName, ride);
+                Ride ride = service.Get<Ride>(tableName, where);
+                ride.PassengerId = bookerId;
+                service.Update(tableName, ride);
                 response.IsSuccess = true;
             }
             catch(Exception ex)
@@ -37,7 +40,7 @@ namespace Carpool.Services
 
         public APIResponse GetAvailableRides(AvailableRideRequest request)
         {
-            APIResponse response = new APIResponse();
+            APIResponse response = new();
             try
             {
                 response.Data = service.GetRideInfo(request);
@@ -53,7 +56,7 @@ namespace Carpool.Services
 
         public APIResponse OfferRide(Ride ride)
         {
-            APIResponse response = new APIResponse();
+            APIResponse response = new();
             try
             {
                 ride.PassengerId = 0;
