@@ -13,7 +13,7 @@ class OfferRide extends React.Component{
         endLocation: '',
         bookingDate: '',
         timeSlot: -1,
-        seats: this.state.seatCount + 1,
+        seats: 1,
         stops: [],
         userId: getId(),
         price: 100

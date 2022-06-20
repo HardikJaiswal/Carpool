@@ -84,6 +84,7 @@ export default class BookRide extends React.Component {
                                         <RideTile key={pos} info={item} isHistory={false} onclick={() => this.bookSelectedRide(pos)} />
                                     );
                                 })}
+                                    {this.state.matchedRides.length == 0 ? <h3>No Rides Found</h3>: null }
                             </div> : null
                     }
                 </div></>

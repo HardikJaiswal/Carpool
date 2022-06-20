@@ -69,7 +69,8 @@ namespace Carpool.Services
             APIResponse response = new();
             try
             {
-                response.Data = dbservice.Get<User>(tableName,where).Id;
+                response.Data = dbservice.Get<User>(tableName,where);
+                if (response.Data != null) response.Data = response.Data.Id;
                 response.IsSuccess = true;
             }
             catch (Exception e)

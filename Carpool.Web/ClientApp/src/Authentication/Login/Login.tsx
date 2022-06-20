@@ -7,7 +7,7 @@ export default class LogIn extends React.Component {
     userservice = new UserService();
     loginRequest = {
         Email: "",
-        Password: ""
+        Pwd: ""
     };
     constructor(props) {
         super(props);
@@ -23,7 +23,7 @@ export default class LogIn extends React.Component {
     }
     attemptlogin = (event) => {
         event.preventDefault();
-        this.userservice.loginUser(this.loginRequest.Email, this.loginRequest.Password)
+        this.userservice.loginUser(this.loginRequest.Email, this.loginRequest.Pwd)
         .then(res => {
             res = res.data;
             if (res.IsSuccess == true) {
